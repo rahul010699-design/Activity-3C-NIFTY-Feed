@@ -2,6 +2,7 @@
 import base64
 import json
 from datetime import datetime
+from zoneinfo import ZoneInfo
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 
@@ -70,7 +71,7 @@ def save_alerts(alerts, snapshot):
     with ALERT_LOG.open("a", encoding="utf-8") as file:
         for alert in alerts:
             event = {
-                "timestamp": datetime.now().astimezone().isoformat(),
+                "timestamp":datetime.now(ZoneInfo("Asia/Kolkata")).isoformat(),
                 "symbol": snapshot.get("symbol", "NIFTY"),
                 "data_mode": snapshot.get("data_mode", "MOCK"),
                 **alert
