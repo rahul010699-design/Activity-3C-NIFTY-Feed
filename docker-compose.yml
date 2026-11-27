@@ -1,0 +1,24 @@
+﻿services:
+  alerter:
+    build:
+      context: .
+      dockerfile: alerter/Dockerfile
+    container_name: nifty-alerter
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./data:/app/data
+
+  feed:
+    build:
+      context: .
+      dockerfile: feed/Dockerfile
+    container_name: nifty-feed
+    ports:
+      - "8000:8000"
+    environment:
+      ALERTER_URL: http://alerter:8001/pubsub
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      - alerter
